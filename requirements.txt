@@ -1,1 +1,4 @@
-firebase-admin
+firebase-admin==5.4.0
+google-cloud-firestore==2.5.0
+grpcio==1.42.0
+grpcio-status==1.42.0
