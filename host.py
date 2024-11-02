@@ -1,12 +1,14 @@
 import time
 from datetime import datetime
 
+import database
 from config import setup_firebase
 from firebase_admin import firestore
 import subprocess
 from threading import Thread
-from command import Command, Error, Output
+from command import Command, Error, Output, Device
 from database import add_error, add_output
+from config.host_config import HOST_NAME
 
 
 snapshot_initialization = True
@@ -34,7 +36,7 @@ def output_lines():
     for line in process.stdout:
         output_line = line.replace("\n", "")
         output = Output(output_line, datetime.now())
-        add_output(output)
+        add_output(output, HOST_NAME)
 
 
 def error_lines():
@@ -42,8 +44,10 @@ def error_lines():
     for line in process.stderr:
         error_line = line.replace("\n", "")
         error = Error(error_line, datetime.now())
-        add_error(error)
+        add_error(error, HOST_NAME)
 
+
+database.add_device(Device(HOST_NAME, datetime.now()))
 
 output_lines_thread = Thread(target=output_lines)
 output_lines_thread.start()
@@ -52,6 +56,7 @@ error_lines_thread = Thread(target=error_lines)
 error_lines_thread.start()
 
 db = firestore.client()
+db = db.collection("devices").document(HOST_NAME)
 
 collection = db.collection("commands")
 
