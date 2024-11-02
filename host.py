@@ -1,8 +1,8 @@
 import time
 from datetime import datetime
 
-import database
 from config import setup_firebase
+import database
 from firebase_admin import firestore
 import subprocess
 from threading import Thread
