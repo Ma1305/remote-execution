@@ -40,5 +40,7 @@ db.collection("errors").on_snapshot(error_lines)
 user_input = input("user?: ")
 while user_input != "!!exit!!":
     command = Command(user_input, datetime.now())
+    if command.command == "clear":
+        print("\n"*10)
     add_command(command)
     user_input = input("user?: ")
