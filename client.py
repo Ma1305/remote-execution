@@ -1,7 +1,7 @@
 from datetime import datetime
 
-import database
 from config import setup_firebase
+import database
 
 from firebase_admin import firestore
 from command import Command, Output, Error
@@ -37,7 +37,7 @@ def error_lines(doc_snapshots, changes, read_time, *args, **kwargs):
 available_devices = database.get_devices()
 print("available devices are: ")
 for i, device in enumerate(available_devices):
-    print(f"{i}: name: {device}, created_at: {device.time_created}")
+    print(f"{i}:        name: {device.device_name}    |    created_at: {device.time_created}")
 
 print("\n")
 
@@ -59,5 +59,5 @@ while user_input != "!!exit!!":
     command = Command(user_input, datetime.now())
     if command.command == "clear":
         print("\n"*10)
-    add_command(command)
+    add_command(command, device_name)
     user_input = input("user?: ")
